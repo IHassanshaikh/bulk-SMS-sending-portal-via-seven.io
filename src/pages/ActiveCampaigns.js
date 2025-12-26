@@ -150,68 +150,67 @@ export default function ActiveCampaigns() {
                                                 <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>Total: {total}</div>
                                             </td>
                                             <td style={{ textAlign: "right" }}>
-                                                {/* ACTION BUTTONS */}
-                                                {cam.status === "RUNNING" || cam.status === "QUEUED" ? (
-                                                    <button
-                                                        onClick={() => updateStatus(cam._id, "PAUSED")}
-                                                        disabled={statusUpdating === cam._id}
-                                                        style={{
-                                                            marginRight: "8px",
-                                                            background: "#fbbf24",
-                                                            color: "#000",
-                                                            border: "none",
-                                                            padding: "6px 12px",
-                                                            borderRadius: "4px",
-                                                            cursor: statusUpdating === cam._id ? "not-allowed" : "pointer",
-                                                            opacity: statusUpdating === cam._id ? 0.6 : 1
-                                                        }}
-                                                    >
-                                                        {statusUpdating === cam._id ? "..." : "Pause"}
-                                                    </button>
-                                                ) : cam.status === "PAUSED" ? (
-                                                    <button
-                                                        onClick={() => updateStatus(cam._id, "RUNNING")}
-                                                        disabled={statusUpdating === cam._id}
-                                                        style={{
-                                                            marginRight: "8px",
-                                                            background: "#34d399",
-                                                            color: "#000",
-                                                            border: "none",
-                                                            padding: "6px 12px",
-                                                            borderRadius: "4px",
-                                                            cursor: statusUpdating === cam._id ? "not-allowed" : "pointer",
-                                                            opacity: statusUpdating === cam._id ? 0.6 : 1
-                                                        }}
-                                                    >
-                                                        {statusUpdating === cam._id ? "..." : "Resume"}
-                                                    </button>
-                                                ) : null}
+                                                <div className="flex-actions">
+                                                    {/* ACTION BUTTONS */}
+                                                    {cam.status === "RUNNING" || cam.status === "QUEUED" ? (
+                                                        <button
+                                                            onClick={() => updateStatus(cam._id, "PAUSED")}
+                                                            disabled={statusUpdating === cam._id}
+                                                            style={{
+                                                                background: "#fbbf24",
+                                                                color: "#000",
+                                                                border: "none",
+                                                                padding: "6px 12px",
+                                                                borderRadius: "4px",
+                                                                cursor: statusUpdating === cam._id ? "not-allowed" : "pointer",
+                                                                opacity: statusUpdating === cam._id ? 0.6 : 1
+                                                            }}
+                                                        >
+                                                            {statusUpdating === cam._id ? "..." : "Pause"}
+                                                        </button>
+                                                    ) : cam.status === "PAUSED" ? (
+                                                        <button
+                                                            onClick={() => updateStatus(cam._id, "RUNNING")}
+                                                            disabled={statusUpdating === cam._id}
+                                                            style={{
+                                                                background: "#34d399",
+                                                                color: "#000",
+                                                                border: "none",
+                                                                padding: "6px 12px",
+                                                                borderRadius: "4px",
+                                                                cursor: statusUpdating === cam._id ? "not-allowed" : "pointer",
+                                                                opacity: statusUpdating === cam._id ? 0.6 : 1
+                                                            }}
+                                                        >
+                                                            {statusUpdating === cam._id ? "..." : "Resume"}
+                                                        </button>
+                                                    ) : null}
 
-                                                {["RUNNING", "QUEUED", "PAUSED"].includes(cam.status) && (
-                                                    <button
-                                                        onClick={() => { if (window.confirm("Cancel this campaign?")) updateStatus(cam._id, "CANCELED"); }}
-                                                        disabled={statusUpdating === cam._id}
-                                                        style={{
-                                                            background: "#ef4444",
-                                                            color: "#fff",
-                                                            border: "none",
-                                                            padding: "6px 12px",
-                                                            borderRadius: "4px",
-                                                            cursor: statusUpdating === cam._id ? "not-allowed" : "pointer",
-                                                            marginRight: "8px",
-                                                            opacity: statusUpdating === cam._id ? 0.6 : 1
-                                                        }}
-                                                    >
-                                                        {statusUpdating === cam._id ? "..." : "Cancel"}
-                                                    </button>
-                                                )}
+                                                    {["RUNNING", "QUEUED", "PAUSED"].includes(cam.status) && (
+                                                        <button
+                                                            onClick={() => { if (window.confirm("Cancel this campaign?")) updateStatus(cam._id, "CANCELED"); }}
+                                                            disabled={statusUpdating === cam._id}
+                                                            style={{
+                                                                background: "#ef4444",
+                                                                color: "#fff",
+                                                                border: "none",
+                                                                padding: "6px 12px",
+                                                                borderRadius: "4px",
+                                                                cursor: statusUpdating === cam._id ? "not-allowed" : "pointer",
+                                                                opacity: statusUpdating === cam._id ? 0.6 : 1
+                                                            }}
+                                                        >
+                                                            {statusUpdating === cam._id ? "..." : "Cancel"}
+                                                        </button>
+                                                    )}
 
-                                                <button
-                                                    onClick={() => deleteCampaign(cam._id)}
-                                                    style={{ background: "#b91c1c", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "4px", cursor: "pointer" }}
-                                                >
-                                                    Delete
-                                                </button>
+                                                    <button
+                                                        onClick={() => deleteCampaign(cam._id)}
+                                                        style={{ background: "#b91c1c", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "4px", cursor: "pointer" }}
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     );

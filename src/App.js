@@ -10,7 +10,7 @@ import Sidebar from "./components/Sidebar";
 import Loader from "./components/Loader"; // New Loader
 import { useState, useEffect } from "react";
 
-import CreateCampaign from "./pages/CreateCampaign";
+
 import TestSMS from "./pages/TestSMS";
 import LoginPage from "./pages/LoginPage";
 import Settings from "./pages/Settings";
@@ -67,7 +67,7 @@ const AppLayout = ({ children }) => {
         marginLeft: isMobile ? "0" : "280px",
         marginTop: isMobile ? "60px" : "0",
         flex: 1,
-        padding: "20px",
+        padding: "0px",
         width: isMobile ? "100%" : "auto"
       }}>
         <PrivateRoute>
@@ -102,7 +102,7 @@ function App() {
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/campaigns" element={<CampaignLists />} />
               <Route path="/upload" element={<UploadCSV />} />
-              <Route path="/create-campaign" element={<CreateCampaign />} />
+
               <Route path="/sms" element={<SendSMS />} />
               <Route path="/active-campaigns" element={<ActiveCampaigns />} />
               <Route path="/test-sms" element={<TestSMS />} />

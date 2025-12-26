@@ -80,15 +80,40 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Quick Action */}
+                {/* Stat Card 3 */}
+                <div className="glass-panel" style={{ padding: "24px" }}>
+                    <h3 style={{ margin: "0 0 10px 0", color: "var(--text-secondary)" }}>Total Lists</h3>
+                    <div style={{ fontSize: "3rem", fontWeight: "bold", background: "linear-gradient(135deg, #10b981 0%, #3b82f6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                        {stats.campaigns}
+                    </div>
+                    <div style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "10px" }}>
+                        Active contact groups
+                    </div>
+                </div>
+
+                {/* Shortcuts */}
                 <div className="glass-panel" style={{ padding: "24px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <h3 style={{ margin: "0 0 20px 0" }}>Quick Actions</h3>
-                    <Link to="/create-campaign">
-                        <button className="btn-primary" style={{ width: "100%" }}>Start New Campaign</button>
-                    </Link>
-                    {/* <Link to="/upload" style={{ marginTop: "12px", textAlign: "center", color: "var(--accent-secondary)", textDecoration: "none" }}>
-                        Upload Contacts
-                    </Link> */}
+                    <h3 style={{ margin: "0 0 20px 0" }}>Shortcuts</h3>
+                    <div style={{ display: "flex", gap: "12px", flexDirection: "column" }}>
+                        <Link to="/sms">
+                            <button className="btn-primary" style={{ width: "100%" }}>Create and run campaign</button>
+                        </Link>
+                        <Link to="/logs" style={{ textDecoration: "none" }}>
+                            <button style={{
+                                width: "100%",
+                                padding: "12px",
+                                background: "rgba(255,255,255,0.05)",
+                                border: "1px solid var(--glass-border)",
+                                color: "var(--text-primary)",
+                                borderRadius: "12px",
+                                cursor: "pointer",
+                                fontWeight: "600",
+                                transition: "all 0.2s"
+                            }}>
+                                View Message Logs
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             </div>
 

@@ -107,9 +107,9 @@ export default function Sidebar({ isOpen, onClose }) {
                 <nav style={{ flex: 1, overflowY: "auto" }}>
                     <Link to="/" style={linkStyle("/")} onClick={() => isMobile && onClose()}>Dashboard</Link>
                     <Link to="/contacts" style={linkStyle("/contacts")} onClick={() => isMobile && onClose()}>Contacts</Link>
-                    <Link to="/campaigns" style={linkStyle("/campaigns")} onClick={() => isMobile && onClose()}>Campaign Lists</Link>
+                    <Link to="/campaigns" style={linkStyle("/campaigns")} onClick={() => isMobile && onClose()}>List</Link>
                     {/* <Link to="/upload" style={linkStyle("/upload")} onClick={() => isMobile && onClose()}>Upload CSV</Link> */}
-                    <Link to="/sms" style={linkStyle("/sms")} onClick={() => isMobile && onClose()}>Send SMS</Link>
+                    <Link to="/sms" style={linkStyle("/sms")} onClick={() => isMobile && onClose()}>Create and run campaign</Link>
                     <Link to="/active-campaigns" style={linkStyle("/active-campaigns")} onClick={() => isMobile && onClose()}>Active Campaigns</Link>
                     <Link to="/test-sms" style={linkStyle("/test-sms")} onClick={() => isMobile && onClose()}>Test SMS</Link>
                     <Link to="/logs" style={linkStyle("/logs")} onClick={() => isMobile && onClose()}>Logs</Link>
