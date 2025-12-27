@@ -10,7 +10,15 @@ export default function ActiveCampaigns() {
     const fetchCampaigns = async (isFirstLoad = false) => {
         if (isFirstLoad) setLoading(true);
         try {
-            const res = await axios.get(`${API}/sms/campaigns`, { skipLoader: !isFirstLoad });
+            // Add cache-busting timestamp and headers to prevent stale data
+            const res = await axios.get(`${API}/sms/campaigns?_t=${Date.now()}`, {
+                skipLoader: !isFirstLoad,
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
+            });
             // Don't overwrite state blindly if we just optimistically set a status
             setCampaigns(prev => {
                 const newData = res.data;
@@ -28,7 +36,8 @@ export default function ActiveCampaigns() {
 
     useEffect(() => {
         fetchCampaigns(true);
-        const interval = setInterval(() => fetchCampaigns(false), 1000); // 1-second silent refresh
+        // Reduced to 2 seconds for better balance between responsiveness and server load
+        const interval = setInterval(() => fetchCampaigns(false), 2000);
         return () => clearInterval(interval);
     }, [statusUpdating]); // Re-bind on status update to ensure closures are fresh
 
@@ -39,9 +48,10 @@ export default function ActiveCampaigns() {
 
         try {
             await axios.post(`${API}/campaigns/${id}/status`, { status });
-            // On success, reset locker
+            // On success, reset locker and immediately fetch fresh data
             setStatusUpdating(null);
-            fetchCampaigns();
+            // Force immediate refresh to get latest state from server
+            await fetchCampaigns(false);
         } catch (error) {
             console.error("Update Status Error:", error);
             alert("Error updating status: " + (error.response?.data?.message || error.message));
@@ -54,11 +64,16 @@ export default function ActiveCampaigns() {
         if (!window.confirm("Are you sure you want to delete this campaign and all its pending messages? This cannot be undone.")) return;
         try {
             await axios.delete(`${API}/campaigns/${id}`);
-            fetchCampaigns();
+            // Immediately remove from UI for instant feedback
+            setCampaigns(prev => prev.filter(c => c._id !== id));
+            // Then fetch fresh data from server
+            await fetchCampaigns(false);
             alert("Campaign deleted.");
         } catch (error) {
             console.error("Delete Error:", error);
             alert("Error deleting campaign: " + (error.response?.data?.message || error.message));
+            // Rollback on error
+            fetchCampaigns(false);
         }
     };
 

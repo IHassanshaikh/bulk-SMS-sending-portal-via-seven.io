@@ -27,22 +27,32 @@ export default function Logs() {
     // I will check the backend code in the next step to ensure it exists.
     // For now, I will implement the frontend to call it.
 
-    useEffect(() => {
-        setLoading(true); // Explicit loading for first mount
-        const fetch = (isBackground = false) => {
-            axios.get(`${API}/sms/logs?t=${Date.now()}${showClicksOnly ? "&clicksOnly=true" : ""}`, { skipLoader: isBackground })
-                .then(res => {
-                    setLogs(res.data);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.log(err);
-                    if (!isBackground) setLoading(false);
-                });
-        };
+    // Define fetch function outside useEffect so it can be called manually
+    const fetchLogs = (isBackground = false) => {
+        if (!isBackground) setLoading(true);
+        // Add cache-busting timestamp and headers
+        axios.get(`${API}/sms/logs?_t=${Date.now()}${showClicksOnly ? "&clicksOnly=true" : ""}`, {
+            skipLoader: isBackground,
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        })
+            .then(res => {
+                setLogs(res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+                if (!isBackground) setLoading(false);
+            });
+    };
 
-        fetch(false);
-        const interval = setInterval(() => fetch(true), 5000); // Silent background fetch every 5 seconds
+    useEffect(() => {
+        fetchLogs(false);
+        // Reduced to 3 seconds for better responsiveness
+        const interval = setInterval(() => fetchLogs(true), 3000);
         return () => clearInterval(interval);
     }, [showClicksOnly]);
 
@@ -61,20 +71,38 @@ export default function Logs() {
                         <span>Show Clicked Only (Filter)</span>
                     </label>
                 </div>
-                <button
-                    onClick={handleClearLogs}
-                    style={{
-                        background: "rgba(239, 68, 68, 0.2)",
-                        color: "#f87171",
-                        border: "1px solid #f87171",
-                        padding: "8px 16px",
-                        cursor: "pointer",
-                        borderRadius: "6px",
-                        fontWeight: "bold"
-                    }}
-                >
-                    Clear All Logs
-                </button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                        onClick={() => fetchLogs(false)}
+                        className="btn-secondary"
+                        style={{
+                            padding: "8px 16px",
+                            fontSize: "0.85rem",
+                            background: "rgba(59, 130, 246, 0.2)",
+                            color: "#3b82f6",
+                            border: "1px solid #3b82f6",
+                            cursor: "pointer",
+                            borderRadius: "6px",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        🔄 Refresh Now
+                    </button>
+                    <button
+                        onClick={handleClearLogs}
+                        style={{
+                            background: "rgba(239, 68, 68, 0.2)",
+                            color: "#f87171",
+                            border: "1px solid #f87171",
+                            padding: "8px 16px",
+                            cursor: "pointer",
+                            borderRadius: "6px",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        Clear All Logs
+                    </button>
+                </div>
             </div>
 
             <div className="glass-panel">
